@@ -3,31 +3,25 @@
 $(window).ready(function(){
 
   (function(){
-    /**
-     * [Memo description]
-     */
+
     class Memo {
       /**
        * [constructor description]
        */
       constructor(name)
       {
-        alert(true)
+        /**
+        * @param string name        [the name of the player]
+        * @param string countMemory [number of memory card]
+        */
         this.name = '';
+        this.countMemory = $('#count').val();
 
-        this.createHtmlTag();
         this.start();
       }
 
       /**
-       * [html create the html tags #over]
-       */
-      createHtmlTag()
-      {
-        $('body').prepend('<div class="background "></div><div id="overlay"></div>');
-      }
-      /**
-       * [start description]
+       * [start a new memory game]
        * @return {[type]} [description]
        */
       start()
@@ -35,34 +29,58 @@ $(window).ready(function(){
         $('.background').show();
         if (!this.name)
         {
-          let html = '<label for="username">Name:</label><input name="username" id="username" type="text" pattern="[a-zA-Z0-9]" placeholder="Bitte nur Buchstaben und Zahlen eintragen" autofocus autocomplete="on"/><input type="button" value="senden" id="submit">';
-          $('#overlay').append(html);
+          $('.setting-menu').removeClass('hidden');
+          $('.output-range').text( this.getCount() );
         }
-
       }
-
-      setname()
+      /**
+      * [game pref]
+      */
+      settingGame()
       {
-        this.name = $(event.target ).prev().val();
-        $('.gamer').text( this.name + ' ist am Zug!' );
-        $('.background, #overlay').hide();
+        this.name = $('#username').val() != '' ? $('#username').val() : 'Anonums';
+        this.countMemory = $('#count').val();
+        $('.setting-menu').addClass('hidden');
+        $('.background').hide();
+        this.readHeader()
       }
 
+      /**
+      * [get the value from input#count]
+      */
+      getCount()
+      {
+        return $('#count').val() + ' Karten';
+      }
+
+      /**
+      * []
+      */
+      readHeader()
+      {
+        $('h1').after('<p> - es spielt <b>' + this.name + '</b> mit <b>' + this.countMemory + '</b> Karten.</p>')
+      }
 
 
     }
 
     var memo;
+
     $('#go').on('click', function(){
       memo = new Memo();
       memo.start;
-      $('#submit').on('click', function(event){
-        // console.log(memo)
-        memo.setname();
-      });
     });
 
+    $('#submit').on('click', function(){
+      memo = new Memo();
+      memo.settingGame();
+    });
 
+    $('#count').on('input', function(){
+      $('.output-range').text( memo.getCount() );
+    });
+
+    console.log(memo)
 
 
   })();

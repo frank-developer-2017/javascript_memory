@@ -8,22 +8,38 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-
+    <div class="background "></div>
+    <div id="overlay"></div>
     <section id="memo-games" class="site-memo">
       <div class="container">
 
         <header>
           <nav class="game-nav">
             <ul>
-              <li>
-                <a href="#" id="go" title="Start"><i class="fas fa-play"></i></a>
+              <li class="first">
+                <a href="#" id="go" title="Start"><i class="fas fa-play"></i> Play</a>
+                <ul class="setting-menu hidden">
+                  <li>
+                    <label for="username">Name:</label>
+                    <input name="username" id="username" type="text" pattern="[a-zA-Z0-9]" placeholder="Bitte nur Buchstaben und Zahlen eintragen" autofocus />
+                  </li>
+                  <li>
+                    <span for="count">2</span>
+                    <input type="range" name="count" id="count" value="8" min="2" max="16" >
+                    <span for="count">16</span>
+                    <br>
+                    <div class="output-range"></div>
+                  </li>
+                  <li>
+                    <input type="button" value="Spielem" id="submit">
+                  </li>
+                </ul>
               </li>
-              <li>
-                <a href="#" id="settings" title="Einstellung"><i class="fas fa-cog"></i></a>
-              </li>
+
             </ul>
           </nav>
-          <h1>Memo - <span class="gamer"></span></h1>
+          <h1>Memo <span class="gamer"></span><span class="count"></span></h1>
+          
         </header>
 
         <div class="game-area"></div>
