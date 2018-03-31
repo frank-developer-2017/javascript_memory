@@ -455,7 +455,10 @@ nav a {
   /**
     * header and
     * navigationof the games
-  */ }
+  */
+ /**
+ *  Game Area Design
+*/ }
   .site-memo header {
     display: flex;
     align-items: center;
@@ -491,6 +494,22 @@ nav a {
     font-family: 'Open Sans', sans-serif; }
   .site-memo h1 + p {
     margin-left: 1em; }
+  .site-memo .game-area {
+    display: flex;
+    flex-wrap: wrap;
+    perspective: 1000px; }
+  .site-memo .cards {
+    transition: all 0.7s ease-in-out; }
+  .site-memo .item {
+    width: 150px;
+    height: 150px;
+    border: 1px solid black; }
+  .site-memo .memory-item {
+    padding: 10px;
+    margin: 0; }
+  .site-memo .rotate380 {
+    transform: rotateX(360deg);
+    visibility: visible !important; }
 
 /**
  * overlay

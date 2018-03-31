@@ -75,6 +75,42 @@
   {
     margin-left: 1em;
   }
+
+  /**
+  *  Game Area Design
+ */
+ .game-area
+ {
+   display: flex;
+   flex-wrap: wrap;
+   // max-width: calc(6*156px);
+   perspective: 1000px;
+ }
+
+ .cards
+ {
+   transition: all 0.7s ease-in-out;
+ }
+
+ .item
+ {
+   width: 150px;
+   height: 150px;
+   border: 1px solid black;
+ }
+
+ .memory-item
+ {
+   padding: 10px;
+   margin: 0;
+ }
+
+ .rotate380
+ {
+   transform: rotateX(360deg);
+   visibility: visible !important;
+ }
+
 }
 
 /**
