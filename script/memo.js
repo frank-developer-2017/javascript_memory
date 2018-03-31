@@ -13,21 +13,33 @@ $(window).ready(function(){
       constructor()
       {
         /**
-        * @param string   name            [the name of the player]
-        * @param string   countMemo       [number of memo card]
-        * @param array    numberArray     [number of cards in an array]
-        * @param array    randomArray     [random number of cards in an array]
-        * @param integer  showMemoField   [number of cards that are visible]
-        * @param string   currentImage    [active image by click]
-        * @param string   currentTarget   [active target from image by click]
+        * @param string   pattern           [back of the cards]
+        * @param string   name              [the name of the player]
+        * @param string   countMemo         [number of memo card]
+        * @param array    numberArray       [number of cards in an array]
+        * @param array    randomArray       [random number of cards in an array]
+        * @param integer  showMemoField     [number of cards that are visible]
+        * @param string   currentImage      [active image by click]
+        * @param string   $currentTarget    [active target from image by click]
+        * @param string   $currentTarget2   [second false image]
+        * @param string   firstClick        [taget vom first image click]
+        * @param string   secondClick       [taget vom second image click]
+        * @param string   $firstClickValue  [first image value of clicked]
+        * @param string   $lastClickValue   [last image value by clicked]
         */
-        this.name             = '';
-        this.countMemo        = $('#count').val();
-        this.numberArray      = [];
-        this.randomArray      = [];
-        this.showMemoField    = 0;
-        this.currentImage     = '';
-        this.currentTarget    = '';
+        this.pattern            = 'images/memo/pattern.jpg';
+        this.name               = '';
+        this.countMemo          = $('#count').val();
+        this.numberArray        = [];
+        this.randomArray        = [];
+        this.showMemoField      = 0;
+        this.currentImage       = '';
+        this.$currentTarget     = '';
+        this.$currentTarget2    = '';
+        this.$firstClick        = '';
+        this.$secondClick       = '';
+        this.$firstClickValue   = '';
+        this.$lastClickValue    = '';
 
         /**
          * start the methoden
@@ -177,7 +189,7 @@ $(window).ready(function(){
           var $target = $(event.target);
 
           this.currentImage     = 'images/memo/img_' + $target.attr('data-random') + '.jpg';
-          this.currentTarget    = $target;
+          this.$currentTarget    = $target;
           this.rotate();
         }.bind(this));
 
@@ -188,46 +200,128 @@ $(window).ready(function(){
       rotate()
       {
 
-        if ( !this.currentTarget.hasClass('rotate380') )
+        if ( !this.$currentTarget.hasClass('rotate380') )
         {
           this.chanceImage();
 
           // register the click
-          // if (Memory.init.$firstClick  == '') {
-          //   Memory.init.$firstClick = $(target);
-          // }
-          // else {
-          //
-          //   Memory.init.$currentClick = $(target);
-          // }
-          //
-          // if ( ( Memory.init.$firstClick != '' ) && ( Memory.init.$currentClick != '' ) )
-          // {
-          //   Memory.check();
-          // }
+          if (this.$firstClick  == '') {
+            this.$firstClick = this.$currentTarget;
+          }
+          else {
+
+            this.$secondClick = this.$currentTarget;
+          }
+
+          if ( ( this.$firstClick != '' ) && ( this.$secondClick != '' ) )
+          {
+            this.check();
+          }
 
         }
         else {
-
+          console.log('memo ?');
           //Memory.startCreateMemory( 'images/pattern.jpg', $(target) );
+          //this.startCreateMemo(  );
         }
 
+      }
+
+      check()
+      {
+        let firstRandomCurrent = this.$firstClick.attr('data-random');
+        let lastRandomCurrent = this.$secondClick.attr('data-random');
+        let $firstValue = this.$firstClick;
+        let $lastValue =  this.$secondClick;
+
+
+        if (firstRandomCurrent == lastRandomCurrent)
+        {
+          this.fadeOut();
+          this.$firstClick = '';
+          this.$secondClick = '';
+        } else {
+
+          this.$firstClick = '';
+          this.$secondClick = '';
+          setTimeout( function(){
+
+            this.currentImage = this.pattern;
+            this.$currentTarget = $firstValue;
+            this.$currentTarget2 = $lastValue;
+            this.chanceImage();
+
+          }.bind(this), 1000);
+
+        }
+
+      }
+
+      fadeOut()
+      {
+
+        //$firstClickValue, $lastClickValue
+        console.log(this.$firstClick)
+        this.$firstClick .parent('figure').fadeOut(2000);
+        this.$secondClick.parent('figure').fadeOut(2000);
+
+        this.showMemoField -= 2;
+        this.finish();
+      }
+
+      finish()
+      {
+        if (this.showMemoField == 0)
+        {
+
+            let html = '<div id="overlay" class="hiden"><div class="output"><div class="close">X</div></div></div>';
+            let text = '<h3>Sie haben das Spiel gewonnen!</h3>';
+            $('body').prepend(html);
+            $('#overlay .output').append(text);
+
+            setTimeout(function(){
+              $('#overlay').removeClass('hiden');
+            }, 1500);
+
+            $('.game-area').hide('slow');
+
+            $('.close').on('click', function(){
+              $('#overlay').addClass('hiden');
+            });
+
+            this.clearGame();
+          }
       }
 
       chanceImage()
       {
+
         setTimeout(function(){
-          this.currentTarget.attr('src', this.currentImage);
+          if (this.$currentTarget2)
+          {
+            console.log(this.$currentTarget2);
+            this.$currentTarget2.attr('src', this.currentImage);
+            this.$currentTarget2.toggleClass('rotate380');
+            this.$currentTarget2 = '';
+          }
+          this.$currentTarget.attr('src', this.currentImage);
         }.bind(this), 300);
-        this.currentTarget.toggleClass('rotate380');
+        this.$currentTarget.toggleClass('rotate380');
+
       }
 
       clearGame()
       {
-        this.numberArray    = [];
-        this.randomArray    = [];
-        this.showMemoField  = 0;
-        console.log('clear');
+        this.numberArray        = [];
+        this.randomArray        = [];
+        this.showMemoField      = 0;
+        this.currentImage       = '';
+        this.$currentTarget     = '';
+        this.$currentTarget2    = '';
+        this.$firstClick        = '';
+        this.$secondClick       = '';
+        this.$firstClickValue   = '';
+        this.$lastClickValue    = '';
       }
 
     }// class
