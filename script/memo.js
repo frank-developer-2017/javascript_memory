@@ -40,6 +40,7 @@ $(window).ready(function(){
         this.$secondClick       = '';
         this.$firstClickValue   = '';
         this.$lastClickValue    = '';
+        this.cardOpen           = 0;
 
         /**
          * start the methoden
@@ -184,14 +185,24 @@ $(window).ready(function(){
           .append(htmlOutput)
           .show('slow');
 
-        $('.cards').on('click', function( event ){
 
-          var $target = $(event.target);
 
-          this.currentImage     = 'images/memo/img_' + $target.attr('data-random') + '.jpg';
-          this.$currentTarget    = $target;
-          this.rotate();
-        }.bind(this));
+          $('.cards').on('click', function( event ){
+
+              this.cardOpen ++;
+              if (this.cardOpen <= 2)
+              {
+                var $target = $(event.target);
+
+                this.currentImage     = 'images/memo/img_' + $target.attr('data-random') + '.jpg';
+                this.$currentTarget    = $target;
+                this.rotate();
+              } else
+              {
+                this.cardOpen = 0;
+              }
+
+          }.bind(this));
 
         // set the image of the canvas
         this.showMemoField = this.randomArray.length;
@@ -261,7 +272,7 @@ $(window).ready(function(){
       {
 
         //$firstClickValue, $lastClickValue
-        console.log(this.$firstClick)
+        // console.log(this.$firstClick)
         this.$firstClick .parent('figure').fadeOut(2000);
         this.$secondClick.parent('figure').fadeOut(2000);
 
@@ -299,7 +310,7 @@ $(window).ready(function(){
         setTimeout(function(){
           if (this.$currentTarget2)
           {
-            console.log(this.$currentTarget2);
+            // console.log(this.$currentTarget2);
             this.$currentTarget2.attr('src', this.currentImage);
             this.$currentTarget2.toggleClass('rotate380');
             this.$currentTarget2 = '';
